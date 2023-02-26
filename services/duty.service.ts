@@ -12,9 +12,7 @@ import {
 } from '../repositories/duty.repository';
 
 const createDuty = async (duty: Duty) => {
-  const result = await insertDuty({
-    ...duty,
-  });
+  const result = await insertDuty({ ...duty });
   return result;
 };
 

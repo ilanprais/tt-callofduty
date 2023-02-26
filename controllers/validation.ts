@@ -1,21 +1,26 @@
 import { z, ZodError } from 'zod';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, query, Request, Response } from 'express';
 
 const validateRequest =
   (schema: z.ZodSchema) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse({
+      const parsed = schema.parse({
         body: req.body,
         query: req.query,
         params: req.params,
       });
+
+      req.body = parsed.body;
+      req.query = parsed.query;
+      req.params = parsed.params;
+
       next();
-    } catch (e) {
-      if (e instanceof ZodError) {
-        return res.status(400).json(e.message);
-      } else if (e instanceof Error) {
-        return res.status(500).json(e);
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return res.status(400).json(error.message);
+      } else if (error instanceof Error) {
+        return res.status(500).json(error);
       }
       return res.status(500).json();
     }
