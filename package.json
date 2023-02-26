@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ilanprais/tt-callofduty#readme",
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/mongodb": "^4.0.7",
@@ -37,6 +38,7 @@
     "typescript": "^4.9.5"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.191",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "mongodb": "5.1",
