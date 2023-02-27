@@ -1,14 +1,13 @@
+import { z } from 'zod';
 import request from 'supertest';
 import dotenv from 'dotenv';
 import lodash, { concat } from 'lodash';
 import { Collection } from 'mongodb';
 import { Express } from 'express';
-
 import { getServer } from '../app';
 import { getSoldiersCollection } from '../db_connection';
 import createTestSoldiers from './soldier.data';
 import { Soldier } from '../services/schemas/soldier.zschema';
-import { z } from 'zod';
 
 dotenv.config();
 
@@ -27,7 +26,7 @@ const testSoldiers = createTestSoldiers(3);
   })
 
   afterAll(async () => {
-    await collection.deleteMany({});
+    collection.deleteMany({});
   })
 
   describe("POST /soldiers", () => {
