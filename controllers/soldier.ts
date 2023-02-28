@@ -1,21 +1,21 @@
-import express, { Request, Response } from "express";
-import { z } from "zod";
-import { DocumentNotFoundError } from "../error_handling/client_errors";
+import express, { Request, Response } from 'express';
+import { z } from 'zod';
+import { DocumentNotFoundError } from '../error_handling/client_errors';
 import {
   SoldierSchema,
   SoldierQuerySchema,
-} from "../services/schemas/soldier.zschema";
-import validateRequest from "./validation";
+} from '../services/schemas/soldier.zschema';
+import validateRequest from './validation';
 import {
   createSoldier,
   findSoldierByID,
   findSoldiersByQuery,
-} from "../services/soldier.service";
+} from '../services/soldier.service';
 
 const router = express.Router();
 
 router.post(
-  "/",
+  '/',
   validateRequest(z.object({ body: SoldierSchema })),
   async (req: Request, res: Response) => {
     try {
@@ -26,11 +26,11 @@ router.post(
         return res.status(500).json(e.message);
       }
     }
-  }
+  },
 );
 
 router.get(
-  "/:id",
+  '/:id',
   validateRequest(z.object({ params: z.object({ id: z.string() }) })),
   async (req: Request, res: Response) => {
     try {
@@ -43,11 +43,11 @@ router.get(
         return res.status(500).json(e.message);
       }
     }
-  }
+  },
 );
 
 router.get(
-  "/",
+  '/',
   validateRequest(z.object({ query: SoldierQuerySchema })),
   async (req: Request, res: Response) => {
     try {
@@ -58,7 +58,7 @@ router.get(
         return res.status(500).json(e.message);
       }
     }
-  }
+  },
 );
 
 export { router };

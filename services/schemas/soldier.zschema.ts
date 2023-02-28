@@ -1,20 +1,20 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 const rankings = [
-  "Turai",
-  "Rabat",
-  "Samal",
-  "Samar",
-  "Nagad",
-  "Segem",
-  "Segen",
-  "Seren",
-  "Rasan",
-  "Saal",
-  "Alam",
-  "Taal",
-  "Aluf",
-  "Raal",
+  'Turai',
+  'Rabat',
+  'Samal',
+  'Samar',
+  'Nagad',
+  'Segem',
+  'Segen',
+  'Seren',
+  'Rasan',
+  'Saal',
+  'Alam',
+  'Taal',
+  'Aluf',
+  'Raal',
 ];
 
 const SoldierSchema = z.object({

@@ -1,15 +1,15 @@
-import { z } from "zod";
+import { z } from 'zod';
 import {
   SoldierSchema,
   Soldier,
   SoldierQuery,
-} from "../services/schemas/soldier.zschema";
+} from '../services/schemas/soldier.zschema';
 import {
   insertSoldier,
   getSoldierByID,
   getSoldiersByQuery,
-} from "../repositories/soldier.repository";
-import { DocumentNotFoundError } from "../error_handling/client_errors";
+} from '../repositories/soldier.repository';
+import { DocumentNotFoundError } from '../error_handling/client_errors';
 
 const createSoldier = async (soldier: Soldier) => {
   const DBResult = await insertSoldier(soldier);

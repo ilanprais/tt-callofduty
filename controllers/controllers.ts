@@ -1,4 +1,4 @@
-import {router as healthRoutes} from "./health";
-import {router as soldierRoutes} from "./soldier";
+import { router as healthRoutes } from './health';
+import { router as soldierRoutes } from './soldier';
 
-export {healthRoutes, soldierRoutes};
+export { healthRoutes, soldierRoutes };
