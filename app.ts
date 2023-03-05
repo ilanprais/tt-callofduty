@@ -1,19 +1,24 @@
-import express from "express";
-import dotenv from "dotenv";
-import morgan from "morgan";
-import { router as routes } from "./controllers/server"
-
-dotenv.config();
+import express, { Express } from 'express';
+import morgan from 'morgan';
+import logger from './logger';
+import config from './config';
+import { healthRoutes, soldierRoutes } from './controllers';
 
 const app = express();
 
 app.use(morgan('common'));
 app.use(express.json());
-app.use("/health", routes);
+app.use('/health', healthRoutes);
+app.use('/soldiers', soldierRoutes);
 
-const start = () => {
-  app.listen(process.env.PORT, () => console.log("Server started on port ", process.env.PORT));
-  return app;
+const startApp = () => {
+  const listen = app.listen(config.SERVER_PORT);
+  logger.info(`Server started on port ${config.SERVER_PORT}`);
+  return listen;
 };
 
-export { start };
+function getServer(): Readonly<Express> {
+  return app;
+}
+
+export { startApp, getServer };
