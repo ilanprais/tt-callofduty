@@ -12,6 +12,7 @@ describe('/health routes', () => {
   describe('GET /health', () => {
     test('should return 200', async () => {
       const res = await request(server).get(`/health`);
+
       expect(res.statusCode).toEqual(200);
     });
   });
