@@ -88,7 +88,7 @@ describe('/soldiers routes', () => {
       expect(res.statusCode).toEqual(404);
     });
 
-    test('Should return code 200 and empty list when no soldiers are found', async () => {
+    test('Should return code 400 when trying to query an invalid rank', async () => {
       const res = await request(server).get(`/soldiers?rank=invalid`);
       expect(res.statusCode).toEqual(400);
     });
