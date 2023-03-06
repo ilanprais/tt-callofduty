@@ -1,6 +1,5 @@
-
-import { startApp } from "./app";
-import { getConnection } from "./db_connection";
+import { startApp } from './app';
+import { getConnection } from './db_connection';
 
 getConnection();
 startApp();
