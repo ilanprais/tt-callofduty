@@ -1,6 +1,6 @@
-import { Soldier } from "../services/schemas/soldier.zschema";
-import { getSoldiersCollection } from "../db_connection";
-import { Filter } from "mongodb";
+import { Soldier } from '../services/schemas/soldier.zschema';
+import { getSoldiersCollection } from '../db_connection';
+import { Filter } from 'mongodb';
 
 const insertSoldier = async (soldier: Soldier) => {
   const collection = await getSoldiersCollection();
