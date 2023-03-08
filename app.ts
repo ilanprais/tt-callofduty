@@ -2,7 +2,12 @@ import express, { Express } from 'express';
 import morgan from 'morgan';
 import logger from './logger';
 import config from './config';
-import { healthRoutes, soldierRoutes, dutyRoutes } from './controllers';
+import {
+  healthRoutes,
+  soldierRoutes,
+  dutyRoutes,
+  justiceBoardRoutes,
+} from './controllers';
 
 const app = express();
 
@@ -11,6 +16,7 @@ app.use(express.json());
 app.use('/health', healthRoutes);
 app.use('/soldiers', soldierRoutes);
 app.use('/duties', dutyRoutes);
+app.use('/justice-board', justiceBoardRoutes);
 
 const startApp = () => {
   const listen = app.listen(config.SERVER_PORT);
