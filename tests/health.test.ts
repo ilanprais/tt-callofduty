@@ -1,5 +1,6 @@
 import request from 'supertest';
 import { Express } from 'express';
+
 import { getServer } from '../app';
 
 let server: Readonly<Express>;

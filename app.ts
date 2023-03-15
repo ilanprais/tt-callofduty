@@ -1,5 +1,6 @@
-import express, { Express } from 'express';
 import morgan from 'morgan';
+import express, { Express } from 'express';
+
 import logger from './logger';
 import config from './config';
 import { healthRoutes, soldierRoutes, dutyRoutes } from './controllers';
