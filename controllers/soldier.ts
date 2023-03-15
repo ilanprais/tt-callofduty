@@ -1,29 +1,33 @@
-import express, { Request, Response } from 'express';
-import { z } from 'zod';
-import { DocumentNotFoundError } from '../error_handling/client_errors';
-import {
-  SoldierSchema,
-  SoldierQuerySchema,
-} from '../services/schemas/soldier.zschema';
-import validateRequest from './validation';
+import express, { Response } from 'express';
+
 import {
   createSoldier,
   findSoldierByID,
   findSoldiersByQuery,
 } from '../services/soldier.service';
+import {
+  GetSoldierByIdSchema,
+  GetSoldierByQuerySchema,
+  PostSoldierSchema,
+} from '../schemas/soldier.schema';
+import { RequestBody } from './types';
+import validateRequest from './validation';
+import { Soldier, SoldierQuery } from '../schemas/soldier.zschema';
+import { DocumentNotFoundError } from '../error_handling/client_errors';
 
 const router = express.Router();
 
 router.post(
   '/',
-  validateRequest(z.object({ body: SoldierSchema })),
-  async (req: Request, res: Response) => {
+  validateRequest(PostSoldierSchema),
+  async (req: RequestBody<Soldier>, res: Response) => {
     try {
-      const result = await createSoldier(req.body);
+      const { body } = req;
+      const result = await createSoldier(body);
       return res.status(201).json(result);
-    } catch (e) {
-      if (e instanceof Error) {
-        return res.status(500).json(e.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(500).json(error.message);
       }
     }
   },
@@ -31,16 +35,18 @@ router.post(
 
 router.get(
   '/:id',
-  validateRequest(z.object({ params: z.object({ id: z.string() }) })),
-  async (req: Request, res: Response) => {
+  validateRequest(GetSoldierByIdSchema),
+  async (req: RequestBody<Soldier>, res: Response) => {
     try {
-      const result = await findSoldierByID(req.params.id);
+      const { id } = req.params;
+      const result = await findSoldierByID(id);
       return res.status(200).json(result);
-    } catch (e) {
-      if (e instanceof DocumentNotFoundError) {
-        return res.status(404).json(e.message);
-      } else if (e instanceof Error) {
-        return res.status(500).json(e.message);
+    } catch (error) {
+      if (error instanceof DocumentNotFoundError) {
+        return res.status(404).json(error.message);
+      }
+      if (error instanceof Error) {
+        return res.status(500).json(error.message);
       }
     }
   },
@@ -48,14 +54,15 @@ router.get(
 
 router.get(
   '/',
-  validateRequest(z.object({ query: SoldierQuerySchema })),
-  async (req: Request, res: Response) => {
+  validateRequest(GetSoldierByQuerySchema),
+  async (req: RequestBody<SoldierQuery>, res: Response) => {
     try {
-      const result = await findSoldiersByQuery(req.query);
+      const { query } = req;
+      const result = await findSoldiersByQuery(query);
       return res.status(200).json(result);
-    } catch (e) {
-      if (e instanceof Error) {
-        return res.status(500).json(e.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        return res.status(500).json(error.message);
       }
     }
   },

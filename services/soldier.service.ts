@@ -1,34 +1,26 @@
-import { z } from 'zod';
-import {
-  SoldierSchema,
-  Soldier,
-  SoldierQuery,
-} from '../services/schemas/soldier.zschema';
 import {
   insertSoldier,
   getSoldierByID,
   getSoldiersByQuery,
 } from '../repositories/soldier.repository';
-import { DocumentNotFoundError } from '../error_handling/client_errors';
+import { Soldier, SoldierQuery } from '../schemas/soldier.zschema';
+import { validateSoldierExists } from './validation/soldier_validation';
 
 const createSoldier = async (soldier: Soldier) => {
-  const DBResult = await insertSoldier(soldier);
-  const result = SoldierSchema.parse(DBResult);
+  const result = await insertSoldier({ ...soldier });
   return result;
 };
 
-const findSoldierByID = async (id: string) => {
-  const DBResult = await getSoldierByID(id);
-  if (DBResult === null) {
-    throw new DocumentNotFoundError(id);
-  }
-  const result = SoldierSchema.parse(DBResult);
+const findSoldierByID = async (id: Soldier['id']) => {
+  const result = await getSoldierByID(id);
+
+  validateSoldierExists(id, result);
+
   return result;
 };
 
 const findSoldiersByQuery = async (query: SoldierQuery) => {
-  const DBResult = await getSoldiersByQuery(query);
-  const result = z.array(SoldierSchema).parse(DBResult);
+  const result = await getSoldiersByQuery(query);
   return result;
 };
 

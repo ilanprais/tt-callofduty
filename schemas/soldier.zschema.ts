@@ -17,13 +17,15 @@ const rankings = [
   'Raal',
 ];
 
-const SoldierSchema = z.object({
-  id: z.string(),
-  rank: z.enum([rankings[0], ...rankings.slice(1)]),
-  name: z.string(),
-  limitations: z.array(z.string()),
-  duties: z.array(z.string()).optional().default([]),
-});
+const SoldierSchema = z
+  .object({
+    id: z.string(),
+    rank: z.enum([rankings[0], ...rankings.slice(1)]),
+    name: z.string(),
+    limitations: z.array(z.string()),
+    duties: z.array(z.string()).optional().default([]),
+  })
+  .strict();
 
 const SoldierQuerySchema = SoldierSchema.partial();
 
