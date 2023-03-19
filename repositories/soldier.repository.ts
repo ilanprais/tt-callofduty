@@ -40,4 +40,12 @@ const getSoldiersByQuery = async (query: Filter<Soldier>) => {
   return result;
 };
 
-export { insertSoldier, getSoldierByID, getSoldiersByQuery };
+const updateSoldierByID = async (id: string, update: UpdateFilter<Soldier>) => {
+  const result = await collection.findOneAndUpdate({ id: id }, update, {
+    returnDocument: 'after',
+    projection: { _id: false },
+  });
+  return result.value;
+};
+
+export { insertSoldier, getSoldierByID, getSoldiersByQuery, updateSoldierByID };
