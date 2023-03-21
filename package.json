@@ -7,7 +7,7 @@
     "test": "jest",
     "dev": "nodemon index.ts",
     "build": "tsc --build",
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/ilanprais/tt-callofduty#readme",
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/mongodb": "^4.0.7",
@@ -44,5 +45,8 @@
     "nodemon": "^2.0.20",
     "pino": "^8.11.0",
     "zod-express-middleware": "^1.4.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
   }
 }

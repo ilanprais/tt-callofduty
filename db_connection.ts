@@ -1,6 +1,8 @@
 import { MongoClient, Db } from 'mongodb';
+
 import config from './config';
-import { Soldier } from './services/schemas/soldier.zschema';
+import { Duty } from './schemas/duty.zschema';
+import { Soldier } from './schemas/soldier.zschema';
 
 let connection: Db;
 
@@ -22,4 +24,10 @@ const getSoldiersCollection = async () => {
   return collection;
 };
 
-export { getSoldiersCollection };
+const getDutiesCollection = async () => {
+  const connection = await getConnection();
+  const collection = connection.collection<Duty>('duties');
+  return collection;
+};
+
+export { getConnection, getSoldiersCollection, getDutiesCollection };
