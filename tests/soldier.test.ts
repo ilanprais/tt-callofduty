@@ -3,10 +3,10 @@ import { Express } from 'express';
 import { Collection } from 'mongodb';
 import lodash, { concat } from 'lodash';
 
-import { getServer } from '../app';
+import { getServer } from '../index';
+import { Soldier } from '../schemas/soldier.zschema';
 import { createTestSoldier } from './data/soldier.data';
 import { getSoldiersCollection } from '../db_connection';
-import { Soldier } from '../schemas/soldier.zschema';
 
 let server: Readonly<Express>;
 let collection: Readonly<Collection<Soldier>>;
