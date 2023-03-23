@@ -10,8 +10,8 @@ const DutySchema = z
       end: z.coerce.date(),
     }),
     constraints: z.array(z.string()),
-    soldiersRequired: z.number(),
-    value: z.number(),
+    soldiersRequired: z.number().positive(),
+    value: z.number().positive(),
     soldiers: z.array(z.string()).optional().default([]),
   })
   .strict();
