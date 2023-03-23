@@ -14,8 +14,8 @@ const createTestDuty = () => {
     constraints: Array.from({ length: 3 }, (x, i) => {
       return `constraint ${i}`;
     }),
-    soldiersRequired: Math.round(Math.random() * 10),
-    value: Math.round(Math.random() * 10),
+    soldiersRequired: Math.ceil(Math.random() * 10),
+    value: Math.ceil(Math.random() * 10),
     soldiers: [],
   };
 };
