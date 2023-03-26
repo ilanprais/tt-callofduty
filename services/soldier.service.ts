@@ -30,10 +30,6 @@ const updateSoldier = async (id: string, update: SoldierQuery) => {
 
   validateSoldierExists(id, findResult);
 
-  if (Object.keys(SoldierQuerySchema.parse(update)).length === 0) {
-    return findResult;
-  }
-
   const result = await updateSoldierByID(id, { $set: update });
 
   return result;

@@ -6,6 +6,7 @@ import {
   GetDutyByQuerySchema,
   PatchDutySchema,
   PostDutySchema,
+  PutDutySchema,
 } from '../schemas/duty.schema';
 import {
   createDuty,
@@ -18,6 +19,7 @@ import validateRequest from './validation';
 import { RequestBody } from './types';
 import { ClientError } from '../error_handling/client_errors';
 import { Duty, DutyQuery, DutyId } from '../schemas/duty.zschema';
+import scheduleDuty from '../services/scheduling.service';
 
 const router = express.Router();
 
@@ -111,4 +113,23 @@ router.patch(
   },
 );
 
-export default router;
+router.put(
+  '/:id/schedule',
+  validateRequest(PutDutySchema),
+  async (req: RequestBody<DutyId>, res: Response) => {
+    try {
+      const { id } = req.params;
+      const result = await scheduleDuty(id);
+      return res.status(200).json(result);
+    } catch (error) {
+      if (error instanceof ClientError) {
+        return res.status(error.code).json(error.message);
+      }
+      if (error instanceof Error) {
+        return res.status(500).json(error.message);
+      }
+    }
+  },
+);
+
+export { router };

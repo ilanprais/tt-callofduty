@@ -1,4 +1,4 @@
-import { Filter } from 'mongodb';
+import { Filter, UpdateFilter } from 'mongodb';
 
 import { Soldier } from '../schemas/soldier.zschema';
 import { getSoldiersCollection } from '../db_connection';
@@ -7,6 +7,7 @@ const defaultProjection = { projection: { _id: false } };
 
 const insertSoldier = async (soldier: Soldier) => {
   const collection = await getSoldiersCollection();
+  await collection.createIndex({ id: 1 }, { unique: true });
   const insert = await collection.insertOne(soldier);
   const result = await collection.findOne(
     { _id: insert.insertedId },
@@ -41,6 +42,7 @@ const getSoldiersByQuery = async (query: Filter<Soldier>) => {
 };
 
 const updateSoldierByID = async (id: string, update: UpdateFilter<Soldier>) => {
+  const collection = await getSoldiersCollection();
   const result = await collection.findOneAndUpdate({ id: id }, update, {
     returnDocument: 'after',
     projection: { _id: false },

@@ -14,13 +14,13 @@ class CannotScheduleScheduledDutyError extends SchedulingError {
   }
 }
 
-class NotEnoughSoldiersForSchedulingDutyError extends SchedulingError {
+class InsufficientSoldiersForSchedulingDutyError extends SchedulingError {
   constructor(request: string) {
-    super(`Cannot schedule a duty which is already scheduled: ${request}`);
+    super(`Insufficient soldiers for scheduling duty: ${request}`);
   }
 }
 
 export {
   CannotScheduleScheduledDutyError,
-  NotEnoughSoldiersForSchedulingDutyError,
+  InsufficientSoldiersForSchedulingDutyError,
 };

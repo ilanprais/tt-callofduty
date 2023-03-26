@@ -15,6 +15,8 @@ const GetDutyByIdSchema = z.object({
 
 const DeleteDutySchema = GetDutyByIdSchema;
 
+const PutDutySchema = GetDutyByIdSchema;
+
 const GetDutyByQuerySchema = z.object({ query: DutyQuerySchema });
 
 const PatchDutySchema = z.object({
@@ -28,4 +30,5 @@ export {
   GetDutyByQuerySchema,
   DeleteDutySchema,
   PatchDutySchema,
+  PutDutySchema,
 };
