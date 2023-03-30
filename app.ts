@@ -1,13 +1,13 @@
 import { startServer } from './index';
-import { closeConnection, startConnection } from './db_connection';
+import { disconnect, connect } from './db_connection';
 
 const startApp = async () => {
-  await startConnection();
+  await connect();
   startServer();
 };
 
 const closeApp = async () => {
-  await closeConnection();
+  await disconnect();
 };
 
 export { startApp, closeApp };
