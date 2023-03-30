@@ -111,4 +111,4 @@ router.patch(
   },
 );
 
-export { router };
+export default router;
