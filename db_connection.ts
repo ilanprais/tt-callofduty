@@ -6,17 +6,17 @@ import { Soldier } from './schemas/soldier.zschema';
 
 let client: MongoClient;
 
-const startConnection = async () => {
+const connect = async () => {
   client = await MongoClient.connect(config.URI_DB);
 };
 
-const closeConnection = async () => {
+const disconnect = async () => {
   await client.close();
 };
 
 const getConnection = async () => {
   if (!client) {
-    await startConnection();
+    await connect();
   }
   return client.db(config.NAME_DB);
 };
@@ -34,9 +34,9 @@ const getDutiesCollection = async () => {
 };
 
 export {
-  startConnection,
+  connect,
   getConnection,
   getSoldiersCollection,
   getDutiesCollection,
-  closeConnection,
+  disconnect,
 };
