@@ -3,7 +3,7 @@ import request from 'supertest';
 import { Express } from 'express';
 import { Collection, ObjectId } from 'mongodb';
 
-import { getServer } from '../app';
+import { getServer } from '../index';
 import { getDutiesCollection } from '../db_connection';
 import { Duty, DutySchema } from '../schemas/duty.zschema';
 import { createTestDuty, createTestDutyWithId } from './data/duty.data';

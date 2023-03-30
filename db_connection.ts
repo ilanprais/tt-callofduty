@@ -1,21 +1,24 @@
-import { MongoClient, Db } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 import config from './config';
 import { Duty } from './schemas/duty.zschema';
 import { Soldier } from './schemas/soldier.zschema';
 
-let connection: Db;
+let client: MongoClient;
 
-const connect = async () => {
-  const client = await MongoClient.connect(config.URI_DB);
-  connection = client.db(config.NAME_DB);
+const startConnection = async () => {
+  client = await MongoClient.connect(config.URI_DB);
+};
+
+const closeConnection = async () => {
+  await client.close();
 };
 
 const getConnection = async () => {
-  if (!connection) {
-    await connect();
+  if (!client) {
+    await startConnection();
   }
-  return connection;
+  return client.db(config.NAME_DB);
 };
 
 const getSoldiersCollection = async () => {
@@ -30,4 +33,10 @@ const getDutiesCollection = async () => {
   return collection;
 };
 
-export { getConnection, getSoldiersCollection, getDutiesCollection };
+export {
+  startConnection,
+  getConnection,
+  getSoldiersCollection,
+  getDutiesCollection,
+  closeConnection,
+};
