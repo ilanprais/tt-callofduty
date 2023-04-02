@@ -1,5 +1,6 @@
-import { Filter, UpdateFilter } from 'mongodb';
+import { Filter } from 'mongodb';
 
+import { DutyId } from '../schemas/duty.zschema';
 import { Soldier } from '../schemas/soldier.zschema';
 import { getSoldiersCollection } from '../db_connection';
 
@@ -41,13 +42,16 @@ const getSoldiersByQuery = async (query: Filter<Soldier>) => {
   return result;
 };
 
-const updateSoldierByID = async (id: string, update: UpdateFilter<Soldier>) => {
+const addDutyToSoldiers = async (
+  soldierIds: Soldier['id'][],
+  dutyId: DutyId,
+) => {
   const collection = await getSoldiersCollection();
-  const result = await collection.findOneAndUpdate({ id: id }, update, {
-    returnDocument: 'after',
-    projection: { _id: false },
-  });
-  return result.value;
+  const result = await collection.updateMany(
+    { $id: { $in: { soldierIds } } },
+    { $push: { duties: dutyId } },
+  );
+  return result.acknowledged;
 };
 
-export { insertSoldier, getSoldierByID, getSoldiersByQuery, updateSoldierByID };
+export { insertSoldier, getSoldierByID, getSoldiersByQuery, addDutyToSoldiers };
