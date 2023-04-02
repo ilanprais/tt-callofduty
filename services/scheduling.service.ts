@@ -1,53 +1,31 @@
 import { updateDuty } from './duty.service';
-import { updateSoldier } from './soldier.service';
-import getJusticeBoard from './justice_board.service';
+import { DutyId } from '../schemas/duty.zschema';
 import { getDutyByID } from '../repositories/duty.repository';
-import { getSoldiersByQuery } from '../repositories/soldier.repository';
+import { validateDutyExists } from './validation/duty_validation';
+import { addDutyToSoldiers } from '../repositories/soldier.repository';
+import { findSoldiersForDuty } from '../repositories/scheduling.repository';
 import {
-  CannotScheduleScheduledDutyError,
-  InsufficientSoldiersForSchedulingDutyError,
-} from '../error_handling/scheduling_errors';
+  validateDutyIsUnscheduled,
+  validateEnoughSoldiers,
+} from './validation/scheduling_validation';
 
-async function scheduleDuty(id: string) {
+async function scheduleDuty(id: DutyId) {
   const duty = await getDutyByID(id);
-  const soldiers = await getSoldiersByQuery({});
-  const justiceBoard = await getJusticeBoard();
 
-  if (duty?.soldiers && duty?.soldiers.length > 0) {
-    throw new CannotScheduleScheduledDutyError(id);
-  }
+  validateDutyExists(id, duty);
+  validateDutyIsUnscheduled(id, duty);
 
-  const suitableSoldierIds = soldiers
-    .filter(
-      (soldier) =>
-        soldier.limitations.filter((limitation) =>
-          duty?.constraints.includes(limitation),
-        ).length == 0,
-    )
-    .map((soldier) => soldier.id);
+  const assignedSoldiers = await findSoldiersForDuty(duty);
 
-  const assignedSoldierIds = justiceBoard
-    .filter((field) => suitableSoldierIds.includes(field.id))
-    .sort((field1, field2) => field1.score - field2.score)
-    .map((field) => field.id)
-    .slice(0, Number(duty?.soldiersRequired));
+  validateEnoughSoldiers(id, duty, assignedSoldiers);
 
-  if (suitableSoldierIds.length < Number(duty?.soldiersRequired)) {
-    throw new InsufficientSoldiersForSchedulingDutyError(id);
-  }
+  const soldierIds = assignedSoldiers.map((soldier) => soldier['id']);
 
   await updateDuty(id, {
-    soldiers: assignedSoldierIds,
+    soldiers: soldierIds,
   });
 
-  assignedSoldierIds.forEach(async (soldierId) => {
-    const originalDuties = soldiers.find(
-      (soldier) => soldier.id == soldierId,
-    )?.duties;
-    await updateSoldier(soldierId, {
-      duties: [...(originalDuties ? originalDuties : []), id],
-    });
-  });
+  await addDutyToSoldiers(soldierIds, id);
 
   const assignedDuty = await getDutyByID(id);
   return assignedDuty;
